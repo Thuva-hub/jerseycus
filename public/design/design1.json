@@ -251,7 +251,7 @@
     "globalCompositeOperation": "source-over",
     "skewX": 0,
     "skewY": 0,
-    "src": "http://localhost:5173/textures/sample.png",
+    "src": "./textures/sample.png",
     "crossOrigin": "anonymous",
     "filters": []
   },
@@ -289,7 +289,7 @@
     "globalCompositeOperation": "source-over",
     "skewX": 0,
     "skewY": 0,
-    "src": "http://localhost:5173/textures/sample.png",
+    "src": "./textures/sample.png",
     "crossOrigin": "anonymous",
     "filters": []
   }
