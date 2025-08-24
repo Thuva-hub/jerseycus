@@ -1,0 +1,44 @@
+.container {
+  text-align: center;
+  padding: 2rem;
+}
+
+.carousel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-wrapper {
+  display: flex;
+  gap: 1rem;
+  transition: all 0.5s ease-in-out;
+  transform-style: preserve-3d;
+}
+
+.card {
+  width: 150px;
+  height: 200px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  transition: transform 0.4s ease-in-out;
+  transform: translateY(10px) scale(0.95);
+}
+
+.card:hover {
+  transform: translateY(0px) scale(1.03);
+}
+
+.card img {
+  width: 100%;
+  height: 130px;
+  object-fit: cover;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+}
+
+.card p {
+  margin: 0.5rem 0;
+  font-weight: bold;
+}
