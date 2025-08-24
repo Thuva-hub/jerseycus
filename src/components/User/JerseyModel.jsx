@@ -1,15 +1,27 @@
 import * as THREE from 'three'
 import { useGLTF, useTexture } from '@react-three/drei'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
-export default function JerseyModel({selectedLayer,selectedColor, userDesign }) {
+export default function JerseyModel({ selectedLayer, selectedColor, userDesign }) {
   const { scene } = useGLTF('/models/bike_taupo_mens_trail_jersey.glb')
+  const [isMobile, setIsMobile] = useState(false)
 
   // Always call both hooks
   const defaultTexture = useTexture('/textures/sample.png')
   const userTexture = useTexture(userDesign || '/textures/sample.png')
 
   const textureToUse = userDesign ? userTexture : defaultTexture
+
+  // Check if mobile
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
   useEffect(() => {
     if (!textureToUse) return
@@ -26,36 +38,34 @@ export default function JerseyModel({selectedLayer,selectedColor, userDesign }) 
 
     scene.traverse((child) => {
       if (child.isMesh && child.material && child.material.isMeshStandardMaterial) {
-        // console.log('🧱 Mesh Name:', child.name)
-        // console.log('📐 Geometry:', child.geometry)
-        // console.log('🗺️ UV Mapping:', child.geometry.attributes.uv)
-        // console.log('🎨 Material:', child.material?.map?.image?.src)
-        
         if (userDesign) {
           // If design selected → apply texture to all
           child.material.map = textureToUse
           child.material.color.set('#ffffff')
-        } 
-        else {
+        } else {
           // Color change only for matching layer
           if (child.name.toLowerCase().includes(selectedLayer.toLowerCase())) {
             child.material.color.set(selectedColor)
             child.material.map = null // remove texture if only color
-          }}
-        // child.material.map = textureToUse
-        // child.material.color.set('#ffffff')
+          }
+        }
+
         child.material.roughness = 0.8
         child.material.metalness = 0.1
         child.material.needsUpdate = true
       }
     })
-  }, [scene, textureToUse,selectedColor, selectedLayer, userDesign])
+  }, [scene, textureToUse, selectedColor, selectedLayer, userDesign])
+
+  // Mobile-responsive scale and position
+  const scale = isMobile ? [5, 5, 5] : [7, 7, 7]
+  const position = isMobile ? [0, -1, 0] : [0, -1.5, 0]
 
   return (
     <primitive
       object={scene}
-      scale={[7, 7, 7]}
-      position={[0, -1.5, 0]}
+      scale={scale}
+      position={position}
       rotation={[0, Math.PI, 0]}
     />
   )
